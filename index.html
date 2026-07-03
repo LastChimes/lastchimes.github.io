@@ -3,53 +3,399 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Iron Kill — Cosmetopia</title>
+<title>Iron Kill — Robot Fighting Game for PC | Cosmetopia</title>
+<meta name="description" content="Iron Kill is a robot fighting game for PC. Build and upgrade a roster of battle robots, fight through the campaign and leagues, battle online 1v1, and replay every fight. Coming to the Epic Games Store.">
+<meta name="theme-color" content="#0a0c10">
+<link rel="icon" type="image/png" href="assets/boss-eiko.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cosmetopia">
+<meta property="og:title" content="Iron Kill — Robot Fighting Game for PC">
+<meta property="og:description" content="Build and upgrade a roster of battle robots, fight through the campaign and leagues, battle online 1v1, and replay every fight. Coming to the Epic Games Store.">
+<meta property="og:url" content="https://cosmetopia.games">
+<meta property="og:image" content="https://cosmetopia.games/assets/boss-eiko.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Iron Kill — Robot Fighting Game for PC">
+<meta name="twitter:description" content="Build and upgrade a roster of battle robots, fight through the campaign and leagues, battle online 1v1, and replay every fight. Coming to the Epic Games Store.">
+<meta name="twitter:image" content="https://cosmetopia.games/assets/boss-eiko.png">
 <style>
-  :root { color-scheme: dark; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    background: #0e1116; color: #e6edf3; line-height: 1.6;
+  :root {
+    color-scheme: dark;
+    --bg: #07090d;
+    --bg2: #0c1017;
+    --panel: #10151e;
+    --edge: #232c3b;
+    --edge-hot: #ff5a2a;
+    --text: #dde5ef;
+    --dim: #8a97a8;
+    --faint: #7a8798;
+    --ember: #ff5a2a;
+    --amber: #ffb03a;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
-  h1 { font-size: 2.6rem; margin: 0 0 4px; letter-spacing: 1px; }
-  .tag { color: #8b98a5; font-size: 1.05rem; margin: 0 0 40px; }
-  h2 { margin: 40px 0 10px; font-size: 1.25rem; }
-  p { color: #c9d1d9; }
-  a { color: #58a6ff; }
-  .studio { margin-top: 48px; padding-top: 24px; border-top: 1px solid #232a33; color: #8b98a5; font-size: 0.95rem; }
-  footer { margin-top: 40px; color: #6b7480; font-size: 0.85rem; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--amber); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  section { scroll-margin-top: 84px; }
+
+  /* ---- nav ---- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7, 9, 13, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--edge);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 0 24px;
+    height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .wordmark {
+    font-weight: 900; font-size: 1.15rem; letter-spacing: 0.14em;
+    text-transform: uppercase; text-decoration: none; color: var(--text); white-space: nowrap;
+  }
+  .wordmark .kill { color: var(--ember); }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-links a {
+    color: var(--dim); text-decoration: none; text-transform: uppercase;
+    font-size: 0.76rem; font-weight: 700; letter-spacing: 0.12em;
+    padding: 8px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s;
+  }
+  .nav-links a:hover { color: var(--text); background: rgba(255, 90, 42, 0.1); }
+
+  /* ---- hero ---- */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: clamp(80px, 14vh, 150px) 24px clamp(72px, 12vh, 130px);
+    background:
+      radial-gradient(ellipse 90% 62% at 50% 108%, rgba(255, 90, 42, 0.22), transparent 68%),
+      radial-gradient(ellipse 60% 42% at 50% 118%, rgba(255, 176, 58, 0.12), transparent 70%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(-55deg,
+      rgba(255, 255, 255, 0.022) 0 2px, transparent 2px 26px);
+  }
+  .hero-inner { position: relative; max-width: 860px; margin: 0 auto; }
+  .kicker {
+    text-transform: uppercase; letter-spacing: 0.32em; font-size: 0.78rem;
+    font-weight: 700; color: var(--dim); margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-size: clamp(3.4rem, 13vw, 7.5rem);
+    font-weight: 900; line-height: 0.94; text-transform: uppercase;
+    letter-spacing: -0.015em;
+    transform: scaleY(1.12);
+    transform-origin: center;
+    background: linear-gradient(180deg, #f4f8fd 18%, #b9c6d6 52%, #6d7c92 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.6));
+    margin-bottom: 6px;
+  }
+  .hero h1 .kill {
+    background: linear-gradient(180deg, #ffd8a1 8%, var(--amber) 40%, var(--ember) 80%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .hero-bar {
+    width: 92px; height: 4px; margin: 26px auto 26px;
+    background: linear-gradient(90deg, var(--ember), var(--amber));
+    border-radius: 2px; box-shadow: 0 0 18px rgba(255, 90, 42, 0.55);
+  }
+  .tagline {
+    font-size: clamp(1.05rem, 2.6vw, 1.3rem); color: var(--text);
+    max-width: 620px; margin: 0 auto 34px;
+  }
+  .tagline span { color: var(--dim); }
+  .badge {
+    display: inline-block; padding: 12px 26px;
+    border: 1px solid rgba(255, 90, 42, 0.55); border-radius: 999px;
+    background: rgba(255, 90, 42, 0.09);
+    color: var(--amber); font-weight: 800; font-size: 0.82rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    box-shadow: 0 0 26px rgba(255, 90, 42, 0.18), inset 0 0 14px rgba(255, 90, 42, 0.07);
+  }
+  .platform-note { margin-top: 18px; color: var(--faint); font-size: 0.85rem; letter-spacing: 0.06em; }
+
+  /* ---- hazard divider ---- */
+  .hazard {
+    height: 6px;
+    background: repeating-linear-gradient(-45deg,
+      rgba(255, 90, 42, 0.55) 0 14px, rgba(255, 90, 42, 0.08) 14px 28px);
+    border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge);
+  }
+
+  /* ---- sections ---- */
+  .section { padding: clamp(64px, 9vw, 104px) 0; }
+  .section-head { margin-bottom: 42px; }
+  .section-kicker {
+    color: var(--ember); font-weight: 800; font-size: 0.76rem;
+    text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(1.7rem, 4.4vw, 2.5rem); font-weight: 900;
+    text-transform: uppercase; letter-spacing: 0.015em; line-height: 1.1;
+  }
+  .section-sub { color: var(--dim); margin-top: 12px; max-width: 640px; }
+
+  /* ---- features ---- */
+  .features-grid {
+    display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+  .card {
+    position: relative;
+    background: linear-gradient(180deg, var(--panel), #0b0f16);
+    border: 1px solid var(--edge); border-radius: 12px;
+    padding: 26px 24px 24px;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    overflow: hidden;
+  }
+  .card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent 65%);
+    opacity: 0.65;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 90, 42, 0.5);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.5), 0 0 22px rgba(255, 90, 42, 0.09);
+  }
+  .card-icon {
+    width: 42px; height: 42px; margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 9px; border: 1px solid var(--edge);
+    background: rgba(255, 90, 42, 0.08);
+  }
+  .card-icon svg { width: 22px; height: 22px; stroke: var(--amber); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 {
+    font-size: 1.02rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 8px;
+  }
+  .card p { color: var(--dim); font-size: 0.94rem; }
+
+  /* ---- boss strip ---- */
+  .media-section { background: linear-gradient(180deg, var(--bg2), var(--bg)); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge); }
+  .boss-strip {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+  }
+  .boss-card {
+    background: linear-gradient(180deg, var(--panel), #0b0f16);
+    border: 1px solid var(--edge); border-radius: 12px;
+    padding: 14px 14px 16px; text-align: center;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .boss-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 90, 42, 0.55);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 26px rgba(255, 90, 42, 0.12);
+  }
+  .boss-card img {
+    width: 100%; border-radius: 8px;
+    background: radial-gradient(ellipse at 50% 30%, #1a2231, #0a0d13 75%);
+    border: 1px solid #1c2431;
+  }
+  .boss-name {
+    margin-top: 12px; font-weight: 800; letter-spacing: 0.16em;
+    text-transform: uppercase; font-size: 0.86rem;
+  }
+  .boss-role { display: block; color: var(--faint); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 2px; }
+
+  /* ---- studio ---- */
+  .studio-box {
+    display: flex; gap: 22px; align-items: flex-start;
+    background: linear-gradient(180deg, var(--panel), #0b0f16);
+    border: 1px solid var(--edge); border-left: 3px solid var(--ember);
+    border-radius: 12px; padding: 30px 28px;
+  }
+  .studio-box p { color: var(--dim); }
+  .studio-box strong { color: var(--text); }
+
+  /* ---- contact ---- */
+  .contact-inner { text-align: center; }
+  .contact-mail {
+    display: inline-block; margin-top: 20px; padding: 14px 30px;
+    border: 1px solid var(--edge); border-radius: 10px;
+    background: var(--panel); color: var(--text); text-decoration: none;
+    font-weight: 700; letter-spacing: 0.04em;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .contact-mail:hover {
+    border-color: rgba(255, 90, 42, 0.55);
+    box-shadow: 0 0 22px rgba(255, 90, 42, 0.14);
+    transform: translateY(-2px);
+  }
+
+  /* ---- footer ---- */
+  footer {
+    border-top: 1px solid var(--edge); background: var(--bg2);
+    padding: 30px 24px; text-align: center;
+    color: var(--faint); font-size: 0.85rem;
+  }
+  footer a { color: var(--dim); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+  .foot-sep { margin: 0 10px; color: var(--edge); }
+
+  @media (max-width: 480px) {
+    .nav-inner { padding: 0 12px; gap: 10px; }
+    .nav-links { gap: 0; }
+    .nav-links a { padding: 8px 8px; font-size: 0.7rem; }
+    .studio-box { flex-direction: column; }
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>IRON KILL</h1>
-    <p class="tag">A robot fighting game for PC. A Cosmetopia game.</p>
 
-    <p>Build, upgrade, and master a roster of battle robots, then fight your way
-    through a world tour of arenas. Iron Kill is a robot fighting game for PC with
-    full controller support, fight replays, and online battles.</p>
-
-    <h2>Features</h2>
-    <p>
-      • Dozens of unique fighter robots to collect and upgrade<br>
-      • Campaign, leagues, and online 1&nbsp;v&nbsp;1 battles<br>
-      • Fight replays with pause, rewind, and scrubbing<br>
-      • Unlockable profile pictures and achievements<br>
-      • Full keyboard, mouse, and gamepad support<br>
-      • No ads — everything is earnable through play
-    </p>
-
-    <h2>Contact</h2>
-    <p>Support &amp; enquiries: <a href="mailto:jaidyn.projects@yahoo.com">jaidyn.projects@yahoo.com</a></p>
-
-    <div class="studio">
-      <strong>Cosmetopia</strong> — an independent game studio.
+<nav class="nav" aria-label="Main">
+  <div class="nav-inner">
+    <a class="wordmark" href="#top">IRON&nbsp;<span class="kill">KILL</span></a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#media">Media</a>
+      <a href="#contact">Contact</a>
     </div>
-
-    <footer>
-      <a href="privacy.html">Privacy Policy</a> · © 2026 Cosmetopia. All rights reserved.
-    </footer>
   </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <p class="kicker">A Cosmetopia Game</p>
+    <h1>IRON <span class="kill">KILL</span></h1>
+    <div class="hero-bar" aria-hidden="true"></div>
+    <p class="tagline">Build, upgrade, and master a roster of battle robots — then fight your way through a world tour of arenas. <span>A robot fighting game for PC.</span></p>
+    <p><span class="badge">Coming to the Epic Games Store</span></p>
+    <p class="platform-note">Windows PC · Keyboard, mouse &amp; gamepad</p>
+  </div>
+</header>
+
+<div class="hazard" aria-hidden="true"></div>
+
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-kicker">// Arsenal</p>
+      <h2 class="section-title">Built for the Fight</h2>
+      <p class="section-sub">Every robot, every upgrade, every unlock — earned in the arena.</p>
+    </div>
+    <div class="features-grid">
+      <div class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="12" rx="2"/><circle cx="9.5" cy="9.5" r="1.4"/><circle cx="14.5" cy="9.5" r="1.4"/><path d="M9 20h6M12 16v4M12 2v2"/></svg>
+        </div>
+        <h3>Fighter Robot Roster</h3>
+        <p>Dozens of unique fighter robots to collect and upgrade. Tune your machine and take it into battle.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 21h8M10 21v-4M14 21v-4M6 4h12v4a6 6 0 0 1-12 0V4z"/><path d="M6 6H3.5a2.5 2.5 0 0 0 2.6 4M18 6h2.5a2.5 2.5 0 0 1-2.6 4"/></svg>
+        </div>
+        <h3>Campaign, Leagues &amp; 1v1</h3>
+        <p>Fight through the campaign, climb the leagues, and take on other players in online 1&nbsp;v&nbsp;1 battles.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/><path d="M4.5 7.5 3 6M3 6v3.2M3 6h3.2"/></svg>
+        </div>
+        <h3>Fight Replays</h3>
+        <p>Every fight can be replayed — pause the action, rewind it, and scrub to any moment.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.4-2.9 8-7 10-4.1-2-7-5.6-7-10V6l7-3z"/><path d="M9.2 12l2 2 3.8-4"/></svg>
+        </div>
+        <h3>Achievements &amp; Unlocks</h3>
+        <p>Earn an achievement for every boss you take down, and unlock profile pictures as you grow your robot collection.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="3"/><path d="M7 10v4M5 12h4"/><circle cx="16" cy="11" r="0.8"/><circle cx="18.5" cy="13" r="0.8"/></svg>
+        </div>
+        <h3>Full PC Controls</h3>
+        <p>Full keyboard, mouse, and gamepad support — fight the way you want to fight.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M9.5 10.2c0-1 1.1-1.7 2.5-1.7s2.5.7 2.5 1.7c0 2.5-5 1.5-5 3.8 0 1 1.1 1.7 2.5 1.7s2.5-.7 2.5-1.7"/></svg>
+        </div>
+        <h3>No Ads. No Catches.</h3>
+        <p>One purchase, the whole game. No advertising — everything is earnable through play.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section media-section" id="media">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-kicker">// The Opposition</p>
+      <h2 class="section-title">Know Your Enemy</h2>
+      <p class="section-sub">Twelve bosses stand between you and the top of the campaign. Meet five of them.</p>
+    </div>
+    <div class="boss-strip">
+      <figure class="boss-card">
+        <img src="assets/boss-eiko.png" width="256" height="256" alt="EIKO — boss character portrait: a red-haired fighter wearing a silver combat visor">
+        <figcaption class="boss-name">Eiko<span class="boss-role">Campaign Boss</span></figcaption>
+      </figure>
+      <figure class="boss-card">
+        <img src="assets/boss-helina.png" width="256" height="256" alt="HELINA — boss character portrait: a tattooed fighter in an orange bandana">
+        <figcaption class="boss-name">Helina<span class="boss-role">Campaign Boss</span></figcaption>
+      </figure>
+      <figure class="boss-card">
+        <img src="assets/boss-smith.png" width="256" height="256" alt="SMITH — boss character portrait: a grinning clown in a battered top hat, cigar in hand">
+        <figcaption class="boss-name">Smith<span class="boss-role">Campaign Boss</span></figcaption>
+      </figure>
+      <figure class="boss-card">
+        <img src="assets/boss-alfredo.png" width="256" height="256" alt="ALFREDO — boss character portrait: a heavyweight wrestler in a blue mask with tattooed arms">
+        <figcaption class="boss-name">Alfredo<span class="boss-role">Campaign Boss</span></figcaption>
+      </figure>
+      <figure class="boss-card">
+        <img src="assets/boss-zang.png" width="256" height="256" alt="ZANG — boss character portrait: a long-braided figure in black wearing dark visor glasses">
+        <figcaption class="boss-name">Zang<span class="boss-role">Campaign Boss</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="studio">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-kicker">// The Studio</p>
+      <h2 class="section-title">Cosmetopia</h2>
+    </div>
+    <div class="studio-box">
+      <p><strong>Cosmetopia</strong> is an independent game studio. <strong>Iron Kill</strong> is our robot fighting game for PC — built around a simple idea: get in the arena, earn everything, and settle it machine against machine.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap contact-inner">
+    <div class="section-head" style="margin-bottom: 8px;">
+      <p class="section-kicker">// Comms</p>
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="section-sub" style="margin-left: auto; margin-right: auto;">Support and enquiries — we read everything.</p>
+    </div>
+    <a class="contact-mail" href="mailto:jaidyn.projects@yahoo.com">jaidyn.projects@yahoo.com</a>
+  </div>
+</section>
+
+<footer>
+  <a href="privacy.html">Privacy Policy</a>
+  <span class="foot-sep">|</span>
+  © 2026 Cosmetopia. All rights reserved.
+</footer>
+
 </body>
 </html>
